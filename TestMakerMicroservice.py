@@ -27,13 +27,15 @@ while True:
         pair = lists.pop(n)
 
         bad_list = copy.copy()
-        bad_list.pop(n)
+        bad_list.remove(pair)
         bad_terms = []
         for _ in range(3):
             bad_term = bad_list.pop(randrange(len(bad_list)))
-            bad_terms.append(bad_term)
+            bad_terms.append(bad_term[0])
 
         correct = randrange(4)
-        qlist = [pair[1]] + bad_terms[:correct] + [pair[0]] + bad_terms[correct:]
+        qlist = [pair[1], correct] + bad_terms[:correct] + [pair[0]] + bad_terms[correct:]
+        # Format: [ Defn, correct, term1, term2, term3, term4 ]
         socket.send_pyobj(qlist,zmq.SNDMORE)
+    socket.send_pyobj([])
 
